@@ -74,36 +74,52 @@ h3 {
 /* Hero Section */
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image:
-        linear-gradient(rgba(52, 73, 94, 0.2), rgba(52, 73, 94, 0.2)),
-        url('hero-background.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    flex-direction: row;
+    align-items: stretch;
+    background: linear-gradient(to bottom, var(--muted-teal) 0%, var(--dusty-taupe) 100%);
 }
 
 .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom,
-            rgba(240, 244, 247, 0.05) 0%,
-            rgba(156, 183, 165, 0.1) 100%);
+    display: none;
+}
+
+.hero-img {
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.hero-img-left {
+    width: 500px;
+}
+
+.hero-img-right {
+    width: 500px;
+}
+
+.hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-img-right img {
+    object-position: center top;
 }
 
 .hero-content {
     position: relative;
     z-index: 10;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     color: var(--white);
-    padding: 2rem;
-    max-width: 900px;
+    padding: 3rem 2rem;
 }
 
 .abalone-sketch {
@@ -112,25 +128,25 @@ h3 {
 }
 
 .abalone-img {
-    width: 120px;
+    width: 70px;
     height: auto;
     opacity: 0.9;
 }
 
 .names {
-    font-size: 5rem;
+    font-size: 2.56rem;
     font-weight: 300;
-    margin-bottom: 1rem;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 0.75rem;
+    letter-spacing: 2px;
+    text-shadow: none;
     animation: fadeInUp 1s ease-out 0.3s both;
 }
 
 .ampersand {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: 4.5rem;
-    margin: 0 1rem;
+    font-size: 3.4rem;
+    margin: 0 0.5rem;
 }
 
 .hero-subtitle {
@@ -141,46 +157,69 @@ h3 {
     animation: fadeInUp 1s ease-out 0.5s both;
 }
 
-.date {
-    font-size: 1.3rem;
-    letter-spacing: 3px;
-    margin-bottom: 3rem;
+.invite-prelude {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
     font-weight: 300;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.invite-body {
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 1rem;
+    opacity: 0.9;
     animation: fadeInUp 1s ease-out 0.7s both;
 }
 
-.countdown {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 3rem;
+.invite-divider {
+    width: 60px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.4);
+    margin: 1rem auto;
+    animation: fadeInUp 1s ease-out 0.8s both;
+}
+
+.invite-date,
+.invite-year,
+.invite-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    margin-bottom: 0.25rem;
     animation: fadeInUp 1s ease-out 0.9s both;
 }
 
-.countdown-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 1.5rem 2rem;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.countdown-number {
-    font-size: 3rem;
+.invite-venue {
     font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    line-height: 1;
+    font-size: 1.43rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    animation: fadeInUp 1s ease-out 1s both;
 }
 
-.countdown-label {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 0.5rem;
+.invite-location {
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    margin-bottom: 0.25rem;
     opacity: 0.9;
+    animation: fadeInUp 1s ease-out 1s both;
+}
+
+.invite-details {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    animation: fadeInUp 1s ease-out 1.1s both;
 }
 
 .scroll-indicator {
@@ -190,6 +229,7 @@ h3 {
     transform: translateX(-50%);
     font-size: 2rem;
     color: var(--white);
+    opacity: 0.6;
     animation: bounce 2s infinite;
 }
 
@@ -290,6 +330,12 @@ h3 {
     font-style: italic;
 }
 
+.venue-map-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 /* Travel Section */
 .travel-section {
     background-color: var(--platinum);
@@ -334,7 +380,11 @@ h3 {
     margin: 1rem 0;
 }
 
-.hotel-list li,
+.hotel-list li {
+    padding: 0.4rem 0;
+    color: var(--charcoal-blue);
+}
+
 .activities-list li {
     padding: 0.5rem 0;
     padding-left: 1.5rem;
@@ -342,14 +392,8 @@ h3 {
     color: var(--charcoal-blue);
 }
 
-.hotel-list li::before {
-    content: "🏨";
-    position: absolute;
-    left: 0;
-}
-
 .activities-list li::before {
-    content: "🌊";
+    content: attr(data-icon);
     position: absolute;
     left: 0;
 }
@@ -579,6 +623,50 @@ h3 {
     top: 0;
 }
 
+/* Code Gate */
+.code-gate {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.code-gate-heading {
+    font-size: 2rem;
+    color: var(--charcoal-blue);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+#inviteCode {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--platinum);
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.4rem;
+    text-align: center;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal-blue);
+    transition: border-color 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+#inviteCode:focus {
+    outline: none;
+    border-color: var(--muted-teal);
+}
+
+.code-error {
+    margin-top: 1rem;
+    color: #c0392b;
+    font-size: 0.95rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-container {
@@ -589,38 +677,21 @@ h3 {
         font-size: 0.85rem;
     }
 
+    .hero-img {
+        display: none;
+    }
+
     .names {
-        font-size: 3rem;
+        font-size: 2.2rem;
     }
 
     .ampersand {
-        font-size: 2.8rem;
-        margin: 0 0.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-
-    .date {
-        font-size: 1.1rem;
-    }
-
-    .countdown {
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .countdown-item {
-        padding: 1rem 1.5rem;
-    }
-
-    .countdown-number {
         font-size: 2rem;
+        margin: 0 0.3rem;
     }
 
-    .countdown-label {
-        font-size: 0.8rem;
+    .invite-venue {
+        font-size: 1.1rem;
     }
 
     .section-title {

@@ -1,36 +1,3 @@
-// Countdown Timer
-function updateCountdown() {
-    const weddingDate = new Date('October 24, 2026 16:00:00').getTime();
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
-
-    // Calculate time units
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Update DOM
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
-
-    // If countdown is finished
-    if (distance < 0) {
-        document.getElementById('countdown').innerHTML = `
-            <div class="countdown-item">
-                <span class="countdown-number">🎉</span>
-                <span class="countdown-label">Today's the Day!</span>
-            </div>
-        `;
-    }
-}
-
-// Update countdown every second
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
 // Smooth scroll for navigation
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -47,39 +14,83 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Form submission
-document.getElementById('rsvpForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_QDrH9Ha8QmPnmG-4aAn1fZdqPXVomIsPQdpkyH-x_3v4UmTQkqD6ECsH2p1NVMne/exec';
 
-    // Get form data
-    const formData = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
+
+// Code lookup
+document.getElementById('findInviteBtn').addEventListener('click', async function () {
+    const code = document.getElementById('inviteCode').value.trim().toUpperCase();
+    const errorEl = document.getElementById('codeError');
+    errorEl.style.display = 'none';
+    this.textContent = 'Looking up...';
+    this.disabled = true;
+
+    try {
+        const res = await fetch(`${APPS_SCRIPT_URL}?action=lookup&code=${code}`);
+        const json = await res.json();
+
+        if (json.found) {
+            document.getElementById('rsvpCode').value = code;
+            document.getElementById('rsvpName').value = json.name;
+
+            document.getElementById('guestGreeting').textContent = `Welcome, ${json.name}!`;
+            const guestsSelect = document.getElementById('guests');
+            guestsSelect.innerHTML = '';
+            guestsSelect.dataset.max = json.maxGuests;
+            for (let n = 1; n <= json.maxGuests; n++) {
+                const opt = document.createElement('option');
+                opt.value = n;
+                opt.textContent = n;
+                guestsSelect.appendChild(opt);
+            }
+            guestsSelect.value = json.maxGuests;
+
+            document.getElementById('codeGate').style.display = 'none';
+            document.getElementById('rsvpFormWrap').style.display = 'block';
+        } else {
+            errorEl.textContent = 'Code not found. Please double-check your invitation.';
+            errorEl.style.display = 'block';
+        }
+    } catch (err) {
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        errorEl.style.display = 'block';
+    }
+
+    this.textContent = 'Find My Invitation';
+    this.disabled = false;
+});
+
+// RSVP submission
+document.getElementById('rsvpForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const submitBtn = this.querySelector('.submit-btn');
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
+
+    const payload = {
+        code: document.getElementById('rsvpCode').value,
+        name: document.getElementById('rsvpName').value,
         attendance: document.getElementById('attendance').value,
         guests: document.getElementById('guests').value,
-        dietary: document.getElementById('dietary').value,
-        message: document.getElementById('message').value
+        welcomeParty: document.getElementById('welcomeParty').value,
+        shuttle: document.getElementById('shuttle').value,
+        dietary: document.getElementById('dietary').value
     };
 
-    // Log form data (in production, you'd send this to a server)
-    console.log('RSVP Submitted:', formData);
-
-    // Hide form and show success message
-    this.style.display = 'none';
-    document.getElementById('formSuccess').classList.add('show');
-
-    // Optional: Reset form
-    // this.reset();
-
-    // Optional: Send data to a server
-    // fetch('/api/rsvp', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData)
-    // });
+    try {
+        await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        this.style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+    } catch (err) {
+        submitBtn.textContent = 'Submit RSVP';
+        submitBtn.disabled = false;
+        alert('Something went wrong. Please try again.');
+    }
 });
 
 // Navbar background change on scroll
@@ -125,13 +136,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Guest number toggle based on attendance
 document.getElementById('attendance').addEventListener('change', function () {
-    const guestsInput = document.getElementById('guests');
+    const guestsSelect = document.getElementById('guests');
     if (this.value === 'no') {
-        guestsInput.disabled = true;
-        guestsInput.value = '0';
+        guestsSelect.disabled = true;
+        guestsSelect.innerHTML = '<option value="0">0</option>';
     } else {
-        guestsInput.disabled = false;
-        guestsInput.value = '1';
+        guestsSelect.disabled = false;
+        // Options were populated on lookup; restore the saved max from the last lookup
+        const savedMax = parseInt(guestsSelect.dataset.max || '1');
+        if (guestsSelect.options.length <= 1) {
+            guestsSelect.innerHTML = '';
+            for (let n = 1; n <= savedMax; n++) {
+                const opt = document.createElement('option');
+                opt.value = n;
+                opt.textContent = n;
+                guestsSelect.appendChild(opt);
+            }
+        }
+        guestsSelect.value = guestsSelect.options[guestsSelect.options.length - 1].value;
     }
 });
 
