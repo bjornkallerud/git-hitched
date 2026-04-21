@@ -16,12 +16,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_QDrH9Ha8QmPnmG-4aAn1fZdqPXVomIsPQdpkyH-x_3v4UmTQkqD6ECsH2p1NVMne/exec';
 
+// Rate limiting for code lookups
+const lookupState = { attempts: 0, lockedUntil: 0 };
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS = 60000; // 1 minute
 
 // Code lookup
 document.getElementById('findInviteBtn').addEventListener('click', async function () {
     const code = document.getElementById('inviteCode').value.trim().toUpperCase();
     const errorEl = document.getElementById('codeError');
     errorEl.style.display = 'none';
+
+    // Enforce rate limit
+    const now = Date.now();
+    if (now < lookupState.lockedUntil) {
+        const secsLeft = Math.ceil((lookupState.lockedUntil - now) / 1000);
+        errorEl.textContent = `Too many attempts. Please wait ${secsLeft}s and try again.`;
+        errorEl.style.display = 'block';
+        return;
+    }
+
     this.textContent = 'Looking up...';
     this.disabled = true;
 
@@ -47,8 +61,16 @@ document.getElementById('findInviteBtn').addEventListener('click', async functio
 
             document.getElementById('codeGate').style.display = 'none';
             document.getElementById('rsvpFormWrap').style.display = 'block';
+            lookupState.attempts = 0;
         } else {
-            errorEl.textContent = 'Code not found. Please double-check your invitation.';
+            lookupState.attempts++;
+            if (lookupState.attempts >= MAX_ATTEMPTS) {
+                lookupState.lockedUntil = Date.now() + LOCKOUT_MS;
+                lookupState.attempts = 0;
+                errorEl.textContent = 'Too many failed attempts. Please wait 1 minute and try again.';
+            } else {
+                errorEl.textContent = 'Code not found. Please double-check your invitation.';
+            }
             errorEl.style.display = 'block';
         }
     } catch (err) {

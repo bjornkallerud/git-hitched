@@ -701,8 +701,24 @@ h3 {
         font-size: 0.85rem;
     }
 
-    .hero-img {
+    .hero {
+        flex-direction: column;
+    }
+
+    .hero-img-right {
         display: none;
+    }
+
+    .hero-img-left {
+        display: block;
+        width: 100%;
+        height: 60vw;
+        max-height: 400px;
+        order: 1;
+    }
+
+    .hero-content {
+        order: 0;
     }
 
     .names {
