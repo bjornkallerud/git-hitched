@@ -255,11 +255,28 @@ h3 {
 /* Details Section */
 .details-section {
     background-color: var(--white);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+.details-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(240, 244, 247, 0.75);
+    z-index: 0;
+}
+
+.details-section > .container {
+    position: relative;
+    z-index: 1;
 }
 
 .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     margin-bottom: 4rem;
 }
@@ -486,6 +503,23 @@ h3 {
 /* Travel Section */
 .travel-section {
     background-color: var(--platinum);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+.travel-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(240, 244, 247, 0.75);
+    z-index: 0;
+}
+
+.travel-section > .container {
+    position: relative;
+    z-index: 1;
 }
 
 .travel-grid {
@@ -533,7 +567,7 @@ h3 {
 }
 
 .activities-list li {
-    padding: 0.5rem 0;
+    padding: 0.2rem 0;
     padding-left: 1.5rem;
     position: relative;
     color: var(--charcoal-blue);
@@ -600,12 +634,29 @@ h3 {
 
 /* RSVP Section */
 .rsvp-section {
-    background: linear-gradient(135deg, var(--muted-teal), var(--dusty-taupe));
-    color: var(--white);
+    background-color: var(--platinum);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    color: var(--charcoal-blue);
+}
+
+.rsvp-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(240, 244, 247, 0.75);
+    z-index: 0;
+}
+
+.rsvp-section > .container {
+    position: relative;
+    z-index: 1;
 }
 
 .rsvp-section .section-title {
-    color: var(--white);
+    color: var(--charcoal-blue);
 }
 
 .rsvp-subtitle {
@@ -922,7 +973,10 @@ h3 {
         padding: 4rem 1.5rem;
     }
 
-    .details-grid,
+    .details-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .travel-grid {
         grid-template-columns: 1fr;
     }
