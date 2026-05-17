@@ -252,16 +252,29 @@ h3 {
     letter-spacing: 2px;
 }
 
-/* Details Section */
-.details-section {
-    background-color: var(--white);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
+/* Parallax background image (used in sections) */
+.section-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.details-section::before {
+/* Light overlay for sections with background images */
+.details-section,
+.travel-section,
+.rsvp-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.details-section::before,
+.travel-section::before,
+.rsvp-section::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -269,9 +282,16 @@ h3 {
     z-index: 0;
 }
 
-.details-section > .container {
+.details-section > .container,
+.travel-section > .container,
+.rsvp-section > .container {
     position: relative;
     z-index: 1;
+}
+
+/* Details Section */
+.details-section {
+    background-color: var(--white);
 }
 
 .details-grid {
@@ -503,23 +523,6 @@ h3 {
 /* Travel Section */
 .travel-section {
     background-color: var(--platinum);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-}
-
-.travel-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(240, 244, 247, 0.75);
-    z-index: 0;
-}
-
-.travel-section > .container {
-    position: relative;
-    z-index: 1;
 }
 
 .travel-grid {
@@ -635,24 +638,7 @@ h3 {
 /* RSVP Section */
 .rsvp-section {
     background-color: var(--platinum);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
     color: var(--charcoal-blue);
-}
-
-.rsvp-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(240, 244, 247, 0.75);
-    z-index: 0;
-}
-
-.rsvp-section > .container {
-    position: relative;
-    z-index: 1;
 }
 
 .rsvp-section .section-title {
@@ -924,6 +910,11 @@ h3 {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .section-bg {
+        height: 100%;
+        position: absolute;
+    }
+
     .nav-container {
         gap: 1.5rem;
     }
