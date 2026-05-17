@@ -252,24 +252,15 @@ h3 {
     letter-spacing: 2px;
 }
 
-/* Parallax background image (used in sections) */
-.section-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 150%;
-    object-fit: cover;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* Light overlay for sections with background images */
+/* Sections with background images */
 .details-section,
 .travel-section,
 .rsvp-section {
     position: relative;
-    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .details-section::before,
@@ -910,9 +901,10 @@ h3 {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .section-bg {
-        height: 100%;
-        position: absolute;
+    .details-section,
+    .travel-section,
+    .rsvp-section {
+        background-attachment: scroll;
     }
 
     .nav-container {

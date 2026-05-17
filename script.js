@@ -219,17 +219,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Parallax background images
-window.addEventListener('scroll', () => {
-    document.querySelectorAll('.section-bg').forEach(img => {
-        const section = img.parentElement;
-        const rect = section.getBoundingClientRect();
-        const speed = 0.5;
-        const offset = rect.top * speed;
-        img.style.transform = `translateY(${offset}px)`;
-    });
-});
-
 // Things to Do toggle
 document.querySelectorAll('.things-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
