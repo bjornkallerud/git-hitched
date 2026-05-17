@@ -219,3 +219,14 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Things to Do toggle
+document.querySelectorAll('.things-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        document.querySelectorAll('.things-toggle-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.things-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('things-' + target).classList.add('active');
+    });
+});
+

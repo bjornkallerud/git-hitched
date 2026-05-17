@@ -277,6 +277,153 @@ h3 {
     box-shadow: 0 10px 30px rgba(52, 73, 94, 0.1);
 }
 
+/* Background image cards */
+.detail-card-bg {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    padding: 0;
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-overlay {
+    background-color: rgba(52, 73, 94, 0.65);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 1.5rem;
+    width: calc(100% - 3rem);
+}
+
+.detail-card-bg h3,
+.detail-card-bg .detail-time,
+.detail-card-bg .detail-description {
+    color: var(--white);
+}
+
+.detail-card-bg .detail-time {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Welcome Party special layout */
+.welcome-party-card {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--platinum);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.welcome-party-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(52, 73, 94, 0.1);
+}
+
+.welcome-party-text {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 300px;
+}
+
+.welcome-party-text h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+}
+
+.welcome-party-text .detail-time {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.welcome-party-text .detail-description {
+    color: var(--white);
+    line-height: 1.6;
+}
+
+
+/* Venue with background image */
+.venue-info-bg {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background: none;
+    overflow: hidden;
+}
+
+.venue-info-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+
+.venue-info-bg {
+    background-size: cover;
+    background-position: center;
+}
+
+.venue-info-bg > .detail-overlay {
+    background-color: rgba(52, 73, 94, 0.65);
+    position: relative;
+    z-index: 1;
+    padding: 3rem;
+    border-radius: 10px;
+    margin: 0;
+    width: 100%;
+}
+
+.venue-info-bg .venue-map-link {
+    color: inherit;
+}
+
+/* Travel card with background image */
+.travel-card-bg {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    overflow: hidden;
+}
+
+.travel-card-bg > .detail-overlay {
+    background-color: rgba(52, 73, 94, 0.65);
+    padding: 2.5rem;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    border-radius: 0;
+}
+
+.travel-card-bg h3 {
+    color: var(--white);
+    border-bottom-color: rgba(255, 255, 255, 0.4);
+}
+
+.travel-card-bg p,
+.travel-card-bg li {
+    color: var(--white);
+}
+
+.travel-card-bg .travel-note {
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .detail-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
@@ -393,9 +540,42 @@ h3 {
 }
 
 .activities-list li::before {
-    content: attr(data-icon);
+    content: "\2022";
     position: absolute;
     left: 0;
+}
+
+/* Things to Do Toggle */
+.things-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.things-toggle-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--dusty-taupe);
+    background: transparent;
+    color: var(--dusty-taupe);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.things-toggle-btn.active {
+    background: var(--charcoal-blue);
+    color: var(--white);
+    border-color: var(--charcoal-blue);
+}
+
+.things-content {
+    display: none;
+}
+
+.things-content.active {
+    display: block;
 }
 
 /* Gifts Section */
@@ -745,6 +925,10 @@ h3 {
     .details-grid,
     .travel-grid {
         grid-template-columns: 1fr;
+    }
+
+    .welcome-party-card {
+        flex-direction: column;
     }
 
     .form-row {
